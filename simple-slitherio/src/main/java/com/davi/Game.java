@@ -7,8 +7,6 @@ public class Game {
   public ArrayList<Fruit> fruits = new ArrayList<Fruit>();
 
   public Game(){
-    this.addPlayers(new Player());
-    this.addFruits(new Fruit());
   }
 
   public void addPlayers(Player player){
