@@ -54,7 +54,9 @@ socket.on('bootstrap', gameInitialState => {
 
   document.addEventListener('keydown', (event) => {
     const keyPressed = event.key;
-    socket.emit('playerMove', keyPressed);
+    currentPlayer.lastMovement = keyPressed;
+    const JSONCurrentPlayer = JSON.stringify(currentPlayer); 
+    socket.emit('playerMove', JSONCurrentPlayer);
   });
 
   socket.on('newGameState', gameState => {

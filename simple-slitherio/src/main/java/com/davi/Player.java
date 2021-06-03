@@ -2,7 +2,7 @@ package com.davi;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends Object {
   
   String id;
   int points;
@@ -21,5 +21,11 @@ public class Player {
     Coordinate coordinate = new Coordinate(x, y);
     body.add(coordinate);
   }
-
+ 
+  @Override
+  public boolean equals(Object obj) {
+    Player p = (Player)obj;
+    if (p.id == this.id) return true;
+    else return false; 
+  }
 }
