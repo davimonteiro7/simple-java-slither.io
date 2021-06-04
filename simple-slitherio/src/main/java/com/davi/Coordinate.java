@@ -1,10 +1,10 @@
 package com.davi;
 
 public class Coordinate {
-  double x;
-  double y;
+  int x;
+  int y;
 
-  Coordinate(double x, double y){
+  Coordinate(int x, int y){
     this.x = x;
     this.y = y;
   }

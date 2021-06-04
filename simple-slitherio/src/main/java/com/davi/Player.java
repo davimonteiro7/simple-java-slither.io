@@ -16,8 +16,8 @@ public class Player extends Object {
   }
 
   public void addBody() {
-    double x = Math.floor(Math.random() * (1 - 29)) + 29;
-    double y = Math.floor(Math.random() * (1 - 29)) + 29;
+    int x = (int)(Math.random() * (1 - 29)) + 29;
+    int y = (int)(Math.random() * (1 - 29)) + 29;
     Coordinate coordinate = new Coordinate(x, y);
     body.add(coordinate);
   }

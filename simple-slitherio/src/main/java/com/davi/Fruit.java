@@ -1,11 +1,11 @@
 package com.davi;
 
 public class Fruit {
-  double x;
-  double y;
+  int x;
+  int y;
 
   Fruit(){
-    this.x = Math.floor(Math.random() * (1 - 29)) + 29;
-    this.y = Math.floor(Math.random() * (1 - 29)) + 29;
+    this.x = (int)(Math.random() * (1 - 29)) + 29;;
+    this.y = (int)(Math.random() * (1 - 29)) + 29;;
    }
 }

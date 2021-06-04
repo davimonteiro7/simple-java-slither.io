@@ -1,7 +1,5 @@
 package com.davi;
 
-import java.lang.reflect.Type;
-
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.AuthorizationListener;
 import com.corundumstudio.socketio.Configuration;
@@ -50,13 +48,11 @@ public class App
         server.addEventListener("playerMove", String.class, new DataListener<String>() {
 
             @Override
-            public void onData(SocketIOClient client, String currentPlayerJson, AckRequest ackSender) throws Exception {
+            public void onData(SocketIOClient client, String moveData, AckRequest ackSender) throws Exception {                
                 
-                Player currentPlayer = new Gson().fromJson(currentPlayerJson, (Player.class));
-                System.out.println(currentPlayer);
-                game.newMovement(currentPlayer);
+                game.newMovement(moveData, client.getSessionId().toString());
                 String gameJson = new Gson().toJson(game); 
-
+                
                 server.getClient(client.getSessionId()).sendEvent("newGameState", gameJson);
                 server.getBroadcastOperations().sendEvent("newGameState", gameJson);
             }
