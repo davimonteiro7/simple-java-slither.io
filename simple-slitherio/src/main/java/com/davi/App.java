@@ -48,13 +48,9 @@ public class App
         server.addEventListener("playerMove", String.class, new DataListener<String>() {
 
             @Override
-            public void onData(SocketIOClient client, String moveData, AckRequest ackSender) throws Exception {                
+            public void onData(SocketIOClient client, String moveData, AckRequest ackSender) throws Exception {                                
+                game.newMovement(moveData, client.getSessionId().toString(), server); 
                 
-                game.newMovement(moveData, client.getSessionId().toString());
-                String gameJson = new Gson().toJson(game); 
-                
-                server.getClient(client.getSessionId()).sendEvent("newGameState", gameJson);
-                server.getBroadcastOperations().sendEvent("newGameState", gameJson);
             }
         });
 
