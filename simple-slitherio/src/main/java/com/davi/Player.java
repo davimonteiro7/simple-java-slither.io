@@ -19,7 +19,7 @@ public class Player extends Object {
     int x = (int)(Math.random() * (1 - 29)) + 29;
     int y = (int)(Math.random() * (1 - 29)) + 29;
     Coordinate coordinate = new Coordinate(x, y);
-    body.add(coordinate);
+    this.body.add(coordinate);
   }
  
   @Override

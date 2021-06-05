@@ -10,6 +10,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.google.gson.Gson;
 
 public class App 
@@ -30,13 +31,6 @@ public class App
 
         final SocketIOServer server = new SocketIOServer(config);
 
-        new Timer().schedule(new java.util.TimerTask(){
-            @Override
-            public void run() {
-                game.addFruit(server);
-            }
-        }, 0, 6000);
-
         server.addConnectListener(new ConnectListener(){
             @Override
             public void onConnect(SocketIOClient client) {
@@ -54,7 +48,19 @@ public class App
                 server.getClient(client.getSessionId()).sendEvent("bootstrap", gameJson);
                 server.getBroadcastOperations().sendEvent("newGameState", gameJson);
 
-
+                new Timer().schedule(new java.util.TimerTask(){
+                    @Override
+                    public void run() {
+                        game.addFruit(server);
+                    }
+                }, 0, 6000);
+                
+                new Timer().schedule(new java.util.TimerTask(){
+                    @Override
+                    public void run() {
+                        game.checkLastMovement(playerID, server);;
+                    }
+                }, 0, 300);
             }
         });
 
@@ -65,6 +71,14 @@ public class App
                 game.newMovement(moveData, client.getSessionId().toString(), server); 
                 
             }
+        });
+
+        server.addDisconnectListener(new DisconnectListener(){
+            @Override
+            public void onDisconnect(SocketIOClient client) {
+              game.players.remove(game.players.get(game.getIndexByID(client.getSessionId().toString())));
+              server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(game));
+            }            
         });
 
         server.start();
