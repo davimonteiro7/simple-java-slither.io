@@ -1,5 +1,6 @@
 package com.davi;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
@@ -108,13 +109,21 @@ public class Game {
               && players.get(getIndexByID(currentPlayerId)).body.get(0).y == player.body.get(j).y) {
             
             player.points += players.get(getIndexByID(currentPlayerId)).points;
-            for(int k = 1; k < players.get(getIndexByID(currentPlayerId)).body.size() - 2; k++){
+            
+            for(int k = 1; k < currentPlayer.body.size() - 2; k++){
+              System.out.println(currentPlayer.body.size());
               player.body.add(players.get(getIndexByID(currentPlayerId)).body.get(k));
             }
             
             players.get(getIndexByID(currentPlayerId)).points = 0;
-            players.get(getIndexByID(currentPlayerId)).body.remove(players.get(getIndexByID(currentPlayerId)).body.size());
+            
+            Coordinate pieceOfBody = currentPlayer.body.get(0);
+            currentPlayer.body.clear();
+            currentPlayer.body.add(pieceOfBody);
+
+            server.getClient(UUID.fromString(currentPlayerId)).sendEvent("newGameState", new Gson().toJson(this));;
             server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(this));
+            
           }
         }
       }
