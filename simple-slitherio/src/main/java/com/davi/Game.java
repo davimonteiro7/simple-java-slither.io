@@ -120,10 +120,10 @@ public class Game {
             Coordinate pieceOfBody = currentPlayer.body.get(0);
             currentPlayer.body.clear();
             currentPlayer.body.add(pieceOfBody);
-
+            
             server.getClient(UUID.fromString(currentPlayerId)).sendEvent("newGameState", new Gson().toJson(this));;
             server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(this));
-            
+            break;
           }
         }
       }
