@@ -21,6 +21,7 @@ public class App
         final Game game = new Game();
         
         Configuration config = new Configuration();
+        config.setHostname("0.0.0.0");
         config.setPort(3000);
 
         config.setAuthorizationListener(new AuthorizationListener() {
