@@ -1,4 +1,6 @@
-var socket =  io.connect('http://localhost:3000');
+var socket =  io.connect('18.230.116.217:80',{
+  withCredentials: false
+});
 
 socket.on('connect', () => {
   console.log('> Connected to server');
