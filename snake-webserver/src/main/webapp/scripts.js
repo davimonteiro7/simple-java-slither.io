@@ -1,4 +1,5 @@
-var socket =  io.connect('18.230.116.217:80',{
+const socket =  io.connect('18.230.116.217:80',
+{
   withCredentials: false
 });
 
