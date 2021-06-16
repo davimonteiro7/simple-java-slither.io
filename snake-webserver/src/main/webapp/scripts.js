@@ -1,4 +1,4 @@
-var socket =  io.connect('54.233.223.6');
+var socket =  io.connect('18.230.116.217:80');
 
 socket.on('connect', () => {
   console.log('> Connected to server');
