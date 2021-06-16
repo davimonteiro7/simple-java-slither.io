@@ -22,6 +22,7 @@ public class App
         
         Configuration config = new Configuration();
         config.setHostname("0.0.0.0");
+        config.setOrigin("Access-Control-Allow-Origin");
         config.setPort(3000);
 
         config.setAuthorizationListener(new AuthorizationListener() {

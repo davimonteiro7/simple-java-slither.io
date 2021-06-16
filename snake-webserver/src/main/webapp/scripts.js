@@ -1,4 +1,4 @@
-var socket =  io.connect('http://localhost:3000');
+var socket =  io.connect('54.233.223.6');
 
 socket.on('connect', () => {
   console.log('> Connected to server');
