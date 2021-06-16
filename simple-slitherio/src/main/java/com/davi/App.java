@@ -22,7 +22,7 @@ public class App
         
         Configuration config = new Configuration();
         config.setHostname("0.0.0.0");
-        config.setOrigin("Access-Control-Allow-Origin");
+        config.setOrigin("*:*");
         config.setPort(3000);
 
         config.setAuthorizationListener(new AuthorizationListener() {
@@ -36,6 +36,7 @@ public class App
         server.addConnectListener(new ConnectListener(){
             @Override
             public void onConnect(SocketIOClient client) {
+                System.out.println("CONNECTED ON.");
                 String playerID = client.getSessionId().toString();
                 
                 Player player = new Player(playerID);
