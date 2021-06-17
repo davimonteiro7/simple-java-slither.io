@@ -1,4 +1,4 @@
-const socket =  io.connect('18.230.116.217:80',
+const socket =  io.connect('54.232.170.56:80',
 {
   withCredentials: false
 });
