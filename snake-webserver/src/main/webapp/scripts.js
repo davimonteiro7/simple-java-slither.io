@@ -1,4 +1,4 @@
-const socket =  io.connect('54.232.170.56:80',
+const socket =  io.connect('localhost:3000',
 {
   withCredentials: false
 });

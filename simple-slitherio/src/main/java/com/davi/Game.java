@@ -6,12 +6,33 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.google.gson.Gson;
 
 public class Game {
-  public ArrayList<Player> players = new ArrayList<Player>();
+  private ArrayList<Player> players = new ArrayList<Player>();
   public ArrayList<Fruit> fruits = new ArrayList<Fruit>();
 
   public Game(){
   }
   
+  public void addPlayer(Player player){
+    this.players.add(player);
+  }
+
+  public void removePlayer(Player player){
+    this.players.remove(player);
+  }
+  public Player getPlayerById(String PlayerID){
+    Player player = players.get(getIndexByID(PlayerID));
+    return player;
+  }
+  public int getIndexByID(String id) {
+    int index = -1;
+    for (int i = 0; i < players.size(); i++){
+      if (players.get(i).id.equals(id)){
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
   public void addFruit(SocketIOServer server){
     if (fruits.size() < 7){
       fruits.add(new Fruit());
@@ -29,17 +50,15 @@ public class Game {
       }
     }
   }
-
   public void checkLastMovement(String currentPlayerId, SocketIOServer server){
     if(!players.get(getIndexByID(currentPlayerId)).lastMovement.equals("")){
       newMovement(players.get(getIndexByID(currentPlayerId)).lastMovement, currentPlayerId, server);
     }
   }
-
-  public void newMovement(String moveData, String currentPlayerId, SocketIOServer server){     
+  public void newMovement(String movement, String currentPlayerId, SocketIOServer server){     
     Player currentPlayer = players.get(getIndexByID(currentPlayerId));
     
-    switch (moveData) {
+    switch (movement) {
       case "ArrowUp":
         currentPlayer.lastMovement = "ArrowUp";
         currentPlayer.body.get(0).y--;
@@ -83,6 +102,10 @@ public class Game {
 
     server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(this));
 
+    handleFruitRespawn(currentPlayer, server);
+    handleColision(currentPlayer, currentPlayerId, server);
+  }
+  private void handleFruitRespawn(Player currentPlayer, SocketIOServer server){
     for (int i = 0; i < fruits.size(); i++) {
       Fruit fruit = fruits.get(i);
       if(currentPlayer.body.get(0).x == fruit.x && currentPlayer.body.get(0).y == fruit.y) {
@@ -100,7 +123,9 @@ public class Game {
         server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(this)); 
       }
     }
-
+  }
+  private void handleColision(Player currentPlayer, String currentPlayerId, SocketIOServer server){
+    
     for (int i = 0; i < players.size(); i++){
       Player player = players.get(i);
       if (!player.id.equals(currentPlayerId)){
@@ -130,14 +155,4 @@ public class Game {
     }
   }
 
-  public int getIndexByID(String id) {
-    int index = -1;
-    for (int i = 0; i < players.size(); i++){
-      if (players.get(i).id.equals(id)){
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
 }
