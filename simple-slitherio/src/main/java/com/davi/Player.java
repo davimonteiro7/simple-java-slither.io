@@ -1,20 +1,18 @@
 package com.davi;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Player extends Object {
   
-  UUID ID;
+  String id;
   int points;
   String lastMovement;
   ArrayList<Coordinate> body = new ArrayList<Coordinate>();
 
-  Player(UUID playerID){
-    this.ID = playerID;
+  Player(String PlayerID){
+    this.id = PlayerID;
     this.points = 0;
     this.lastMovement = "";
-    this.addBody();
   }
 
   public void addBody() {
@@ -26,8 +24,8 @@ public class Player extends Object {
  
   @Override
   public boolean equals(Object obj) {
-    Player player = (Player)obj;
-    if (player.ID == this.ID) return true;
+    Player p = (Player)obj;
+    if (p.id == this.id) return true;
     else return false; 
   }
 }

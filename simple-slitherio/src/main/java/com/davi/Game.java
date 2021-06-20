@@ -15,17 +15,18 @@ public class Game {
   public void addPlayer(Player player){
     this.players.add(player);
   }
+
   public void removePlayer(Player player){
     this.players.remove(player);
   }
-  public Player getPlayerById(UUID PlayerID){
+  public Player getPlayerById(String PlayerID){
     Player player = players.get(getIndexByID(PlayerID));
     return player;
   }
-  public int getIndexByID(UUID ID) {
+  public int getIndexByID(String id) {
     int index = -1;
     for (int i = 0; i < players.size(); i++){
-      if (players.get(i).ID.equals(ID)){
+      if (players.get(i).id.equals(id)){
         index = i;
         break;
       }
@@ -49,12 +50,12 @@ public class Game {
       }
     }
   }
-  public void checkLastMovement(UUID currentPlayerId, SocketIOServer server){
+  public void checkLastMovement(String currentPlayerId, SocketIOServer server){
     if(!players.get(getIndexByID(currentPlayerId)).lastMovement.equals("")){
       newMovement(players.get(getIndexByID(currentPlayerId)).lastMovement, currentPlayerId, server);
     }
   }
-  public void newMovement(String movement, UUID currentPlayerId, SocketIOServer server){     
+  public void newMovement(String movement, String currentPlayerId, SocketIOServer server){     
     Player currentPlayer = players.get(getIndexByID(currentPlayerId));
     
     switch (movement) {
@@ -104,7 +105,6 @@ public class Game {
     handleFruitRespawn(currentPlayer, server);
     handleColision(currentPlayer, currentPlayerId, server);
   }
-  
   private void handleFruitRespawn(Player currentPlayer, SocketIOServer server){
     for (int i = 0; i < fruits.size(); i++) {
       Fruit fruit = fruits.get(i);
@@ -124,11 +124,11 @@ public class Game {
       }
     }
   }
-  private void handleColision(Player currentPlayer, UUID currentPlayerId, SocketIOServer server){
+  private void handleColision(Player currentPlayer, String currentPlayerId, SocketIOServer server){
     
     for (int i = 0; i < players.size(); i++){
       Player player = players.get(i);
-      if (!player.ID.equals(currentPlayerId)){
+      if (!player.id.equals(currentPlayerId)){
         for(int j = 0; j < player.body.size(); j++){
           if (players.get(getIndexByID(currentPlayerId)).body.get(0).x == player.body.get(j).x 
               && players.get(getIndexByID(currentPlayerId)).body.get(0).y == player.body.get(j).y) {
@@ -146,13 +146,13 @@ public class Game {
             currentPlayer.body.clear();
             currentPlayer.body.add(pieceOfBody);
             
-            server.getClient(currentPlayerId).sendEvent("newGameState", new Gson().toJson(this));;
+            server.getClient(UUID.fromString(currentPlayerId)).sendEvent("newGameState", new Gson().toJson(this));;
             server.getBroadcastOperations().sendEvent("newGameState", new Gson().toJson(this));
-            
             break;
           }
         }
       }
     }
   }
+
 }
